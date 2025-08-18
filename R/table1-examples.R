@@ -166,24 +166,24 @@ tbl_summary(
 			income ~ "Income",
 			sleep_wkdy ~ "Sleep on weekdays",
 			sleep_wknd ~ "Sleep on weekends"
-		))|>
-		add_overall(col_label = "**Sex**<br>N = {N}")
-	bold_labels() |>
+		),
 		statistic = list(
 			income ~ "{p90}, {p10}",
 			starts_with("sleep") ~ "min = {min}; max={max}",
 			digits = list(
 				income ~ c(3, 3),#onefor p90 and one for p10
 				starts_with("sleep") ~ c(1,1) #1 for min and 1 for max
-			)) |>
+			)))|>
+		add_overall(col_label = "**Sex**<br>N = {N}") |>
+		bold_labels() |>
 		add_p(test = list(
 			all_continuous() ~ "t.test",
 			all_categorical() ~ "chisq.test"
-		) |>
+		)) |>
 			# figured out how to do this from
 			# https://stackoverflow.com/questions/73154658/adding-a-footnote-to-a-single-row-label-in-a-gtsummary-table
 			modify_table_styling(
 				columns = label,
 				rows = label == "Race/ethnicity",
 				footnote = "see https://www.nlsinfo.org/content/cohorts/nlsy79/topical-guide/household/race-ethnicity-immigration-data"
-			))
+			)
