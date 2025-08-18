@@ -132,3 +132,82 @@ tbl_merge(list(tbl_no_int, tbl_int),
 )
 
 
+#Exercises, Step 3
+#Each of the univariate regression examples held the outcome (y =) constant,
+#while varying the predictor variables with include =. You can also look at
+#one predictor across several outcomes. Create a univariate regression table looking
+#at the association between sex (sex_cat) as the x = variable and each of
+#nsibs, sleep_wkdy, and sleep_wknd, and income.
+
+tbl_uvregression(
+	nlsy,
+	x = sex_cat,
+	include = c(nsibs, (starts_with("sleep")), income),
+	method = lm
+)
+
+#Exercise, Step 4
+#Fit a Poisson regression (family = poisson()) for the number of siblings,
+#using at least 3 predictors of your choice. Create a nice table displaying
+#your Poisson regression and its exponentiated coefficients.
+
+tbl_uvregression(
+	nlsy,
+	y = nsibs,
+	include = c(
+		sex_cat, race_eth_cat,
+		eyesight_cat
+	),
+	method = glm,
+	method.args = list(family = poisson()),
+	exponentiate = TRUE
+)
+
+# Exercise, Step 5
+# Instead of odds ratios for wearing glasses, as in the example in the slides.,
+#we want risk ratios. We can do this by specifying in the
+#regression family = binomial(link = "log"). Regress glasses on
+#eyesight_cat and sex_cat and create a table showing the risk ratios and
+#confidence intervals from this regression
+
+tbl_uvregression(
+	nlsy,
+	y = glasses,
+	include = c(
+		sex_cat,
+		eyesight_cat
+	),
+	method = glm,
+	method.args = list(family = binomial(link = "log")),
+	exponentiate = TRUE
+)
+
+# Exercise, Step 6
+#Make a table comparing the logistic and the log-binomial results.
+poisson_tbl <- tbl_uvregression(
+	nlsy,
+	y = nsibs,
+	include = c(
+		sex_cat, race_eth_cat,
+		eyesight_cat
+	),
+	method = glm,
+	method.args = list(family = poisson()),
+	exponentiate = TRUE
+)
+
+binomial_tbl <- tbl_uvregression(
+	nlsy,
+	y = glasses,
+	include = c(
+		sex_cat,
+		eyesight_cat
+	),
+	method = glm,
+	method.args = list(family = binomial(link = "log")),
+	exponentiate = TRUE
+)
+
+tbl_merge(list(binomial_tbl, poisson_tbl),
+					tab_spanner = c("**Model 1**", "**Model 2**")
+)
