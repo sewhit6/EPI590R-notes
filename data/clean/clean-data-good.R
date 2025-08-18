@@ -32,5 +32,7 @@ if (!dir.exists(here::here("data", "clean"))) {
 	dir.create(here::here("data", "clean"))
 }
 
-# save the complete-case data
+# save the complete-case data as a rds file
 write_rds(nlsy_cc, here::here("data", "clean", "nlsy-complete-cases.rds"))
+# csv is plain text, but rds file is specific to R.
+
