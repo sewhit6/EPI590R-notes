@@ -151,16 +151,19 @@ tbl_uvregression(
 #using at least 3 predictors of your choice. Create a nice table displaying
 #your Poisson regression and its exponentiated coefficients.
 
-tbl_uvregression(
-	nlsy,
-	y = nsibs,
-	include = c(
-		sex_cat, race_eth_cat,
-		eyesight_cat
-	),
-	method = glm,
-	method.args = list(family = poisson()),
-	exponentiate = TRUE
+# poisson model
+poisson_model <- glm(nsibs ~ eyesight_cat + sex_cat + income,
+										 data = nlsy, family = poisson()
+)
+
+tbl_regression(
+	poisson_model,
+	exponentiate = TRUE,
+	label = list(
+		sex_cat ~ "Sex",
+		eyesight_cat ~ "Eyesight",
+		income ~ "Income"
+	)
 )
 
 # Exercise, Step 5
@@ -170,44 +173,41 @@ tbl_uvregression(
 #eyesight_cat and sex_cat and create a table showing the risk ratios and
 #confidence intervals from this regression
 
-tbl_uvregression(
-	nlsy,
-	y = glasses,
-	include = c(
-		sex_cat,
-		eyesight_cat
-	),
-	method = glm,
-	method.args = list(family = binomial(link = "log")),
-	exponentiate = TRUE
+# logistic model
+log_model <- glm(glasses ~ eyesight_cat + sex_cat,
+								 data = nlsy, family = binomial(link = "log")
+)
+
+tbl_regression(
+	log_model,
+	exponentiate = TRUE,
+	label = list(
+		sex_cat ~ "Sex",
+		eyesight_cat ~ "Eyesight"
+	)
 )
 
 # Exercise, Step 6
 #Make a table comparing the logistic and the log-binomial results.
-poisson_tbl <- tbl_uvregression(
-	nlsy,
-	y = nsibs,
-	include = c(
-		sex_cat, race_eth_cat,
-		eyesight_cat
-	),
-	method = glm,
-	method.args = list(family = poisson()),
-	exponentiate = TRUE
+
+logistic_table <- tbl_regression(
+	logistic_model,
+	exponentiate = TRUE,
+	label = list(
+		sex_cat ~ "Sex",
+		eyesight_cat ~ "Eyesight"
+	)
 )
 
-binomial_tbl <- tbl_uvregression(
-	nlsy,
-	y = glasses,
-	include = c(
-		sex_cat,
-		eyesight_cat
-	),
-	method = glm,
-	method.args = list(family = binomial(link = "log")),
-	exponentiate = TRUE
+log_table <- tbl_regression(
+	log_model,
+	exponentiate = TRUE,
+	label = list(
+		sex_cat ~ "Sex",
+		eyesight_cat ~ "Eyesight"
+	)
 )
 
-tbl_merge(list(binomial_tbl, poisson_tbl),
-					tab_spanner = c("**Model 1**", "**Model 2**")
+tbl_merge(list(logistic_table, log_table),
+					tab_spanner = c("**Logistic regression**", "**Log-linear regression**")
 )
