@@ -49,7 +49,7 @@ tbl_summary(
   missing_text = "Missing")
 ```
 
-# <u> Exercises part 2</u>
+# Exercises part 2
 ```{r}
 #| error: true
 tbl_summary(
@@ -63,7 +63,7 @@ tbl_summary(
 
 ## Part 1
 ```{r}
-#| label: tbl-one
+#| label: tbl-sex
 #| tbl-cap: "Descriptive statistics"
 tbl_summary(
   nlsy, #error is that this is all caps 
@@ -72,10 +72,45 @@ tbl_summary(
               eyesight_cat, glasses, age_bir))
 ```
 
-@tbl-one shows descriptive statistics 
+@tbl-sex shows descriptive statistics 
 
 ```{r}
-mean_sleep_wknd <- mean(nlsy$sleep_wknd, na.rm  = TRUE)
+med_sleep_wknd <- median(nlsy$sleep_wknd, na.rm  = TRUE)
 ```
 
-On average, participants got `r mean_sleep_wknd` hours per night on the weekends. 
+The middle value (median) number of hours per sleep that participants got was `r med_sleep_wknd` hours per night on the weekends. 
+
+## Part 2
+```{r} 
+#| label: tbl-descr
+#| tbl-cap: "Descriptive Statistics Part 2"
+table1 <- tbl_summary(
+	nlsy,
+	by = sex_cat,
+	include = c(race_eth_cat, region_cat, eyesight_cat, glasses, age_bir)) |>
+	add_overall(last = TRUE)
+table1
+
+inline_text(table1, variable="age_bir", column = "stat_1") 
+inline_text(table1, variable="age_bir", column = "stat_2")
+```
+
+A smaller proportion of males (`r inline_text(table1, variable = "glasses", column="stat_1")`) than females (`r inline_text(table1, variable = "glasses", column = "stat_2")`) participants wore glasses.
+
+## Median hours of sleep
+```{r}
+#| label: tbl-sleep
+#| tbl-cap: "Median Hours of Sleep on Weekends"
+table_sleep <- tbl_summary(
+	nlsy,
+	by = sex_cat,
+	include = sleep_wknd,
+	statistic = sleep_wknd ~ "{median}" ) |> 
+	add_overall()
+
+table_sleep
+
+male_sleep_median <- inline_text(table_sleep, variable="sleep_wknd", column="stat_1")
+```
+
+The median number of hours of sleep for male participants was `r male_sleep_median` hours. 
