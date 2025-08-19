@@ -6,7 +6,8 @@ format:
   html:
     theme: sketchy
 ---
-
+## About the Dataset
+The NLS, sponsored by the U.S. Bureau of Labor Statistics, are nationally representative surveys that follow the same sample of individuals from specific birth cohorts over time. The surveys collect data on labor market activity, schooling, fertility, program participation, health, and much more. 
 ```{r}
 #| message: false
 library(tidyverse)
@@ -49,3 +50,15 @@ tbl_summary(
   ),
   missing_text = "Missing")
 ```
+
+# <u> Exercises part 2</u>
+```{r}
+#| error: true
+tbl_summary(
+  nlsy, #error is that this is all caps 
+  by = sex_cat,
+  include = c(sex_cat, race_eth_cat, region_cat,
+              eyesight_cat, glasses, age_bir))
+
+```
+
