@@ -3,8 +3,6 @@ title: "Test Quarto"
 author: "Sarah Whiteside"
 format: html
 editor: visual
-execute: 
- echo: false
 ---
 
 ## Quarto

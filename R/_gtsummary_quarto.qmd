@@ -2,9 +2,7 @@
 title: "gtsummary in quarto"
 execute: 
   echo: false
-format:
-  html:
-    theme: sketchy
+format: html
 ---
 ## About the Dataset
 The NLS, sponsored by the U.S. Bureau of Labor Statistics, are nationally representative surveys that follow the same sample of individuals from specific birth cohorts over time. The surveys collect data on labor market activity, schooling, fertility, program participation, health, and much more. 
@@ -57,8 +55,26 @@ tbl_summary(
 tbl_summary(
   nlsy, #error is that this is all caps 
   by = sex_cat,
-  include = c(sex_cat, race_eth_cat, region_cat,
+  include = c(race_eth_cat, region_cat,
               eyesight_cat, glasses, age_bir))
-
 ```
 
+# Exercise 2.3
+
+## Part 1
+```{r}
+#| label: tbl-one
+#| tbl_cap: "Table 1 shows descriptive statistics"
+tbl_summary(
+  nlsy, #error is that this is all caps 
+  by = sex_cat,
+  include = c(race_eth_cat, region_cat,
+              eyesight_cat, glasses, age_bir))
+```
+
+
+```{r}
+mean_sleep_wknd <- mean(nlsy$sleep_wknd, na.rm  = TRUE)
+```
+
+On average, participants got `r mean_sleep_wknd` hours per night on the weekends. 
