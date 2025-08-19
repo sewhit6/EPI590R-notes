@@ -64,7 +64,7 @@ tbl_summary(
 ## Part 1
 ```{r}
 #| label: tbl-one
-#| tbl_cap: "Table 1 shows descriptive statistics"
+#| tbl-cap: "Descriptive statistics"
 tbl_summary(
   nlsy, #error is that this is all caps 
   by = sex_cat,
@@ -72,6 +72,7 @@ tbl_summary(
               eyesight_cat, glasses, age_bir))
 ```
 
+@tbl-one shows descriptive statistics 
 
 ```{r}
 mean_sleep_wknd <- mean(nlsy$sleep_wknd, na.rm  = TRUE)
